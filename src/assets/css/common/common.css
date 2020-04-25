@@ -1,0 +1,41 @@
+.w{
+    width: 420px;
+}
+.text{
+    color:#a6a6a7;
+}
+.flex-center{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.outline-none{
+    outline: none !important;
+}
+
+
+.nav-bar-container{
+    position: relative;
+}
+.top-left-return{
+ position: absolute;
+    /* width: 30px;
+    height: 30px; */
+    left: 10px;
+    top: 20px;
+    /* padding-left: 10px; */
+}
+#nav-return{
+    margin-top: 2px;
+    height: 30px;
+}
+
+.btn{
+    height: 50px;
+    width: 185px;
+    background-color: #fedb50;
+    border: none;
+    border-radius: 25px;
+    font-size: 18px;
+   
+  }
