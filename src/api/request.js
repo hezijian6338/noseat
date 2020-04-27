@@ -4,8 +4,10 @@ import {
   Message
 } from 'element-ui'
 import router from '@/router'
+import Cookies from 'js-cookie'
 
-let loadingInstance = null
+
+// let loadingInstance = null
 
 const instance = axios.create({
   timeout: 10000,
@@ -28,10 +30,14 @@ let httpCode = {
 
 instance.interceptors.request.use(
   (config) => {
-    loadingInstance = Loading.service({
-      spinner: 'fa fa-spinner fa-spin fa-3x fa-fw',
-      text: '拼命加载中...',
-    })
+    let token = Cookies.get('token')
+    // loadingInstance = Loading.service({
+    //   spinner: 'fa fa-spinner fa-spin fa-3x fa-fw',
+    //   text: '拼命加载中...',
+    // })
+    if (token != undefined) {
+      config.headers.token = token
+    }
     return config
   },
   (error) => {
@@ -46,7 +52,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => {
     // console.log('响应拦截response ', response);
-    loadingInstance.close()
+    // loadingInstance.close()
     if (response.data.code === 200) {
       return Promise.resolve(response.data)
     } else {
@@ -59,7 +65,7 @@ instance.interceptors.response.use(
   },
   (error) => {
     // console.log('响应拦截error ', error);
-    loadingInstance.close()
+    // loadingInstance.close()
     if (error.response) {
       // 根据请求失败的http状态码去给用户相应的提示
       let tips =

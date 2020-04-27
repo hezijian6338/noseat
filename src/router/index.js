@@ -8,11 +8,13 @@ Vue.use(VueRouter)
 // import Study from 'views/study/Study.vue'
 const Study = () => import('views/study/Study.vue')
 const SearchSeat = () => import('views/study/other/SearchSeat.vue')
+const Scan = () => import('views/study/other/Scan.vue')
 const Rank = () => import('views/study/other/Rank.vue')
 const Shop = () => import('views/study/other/Shop.vue')
 const TimeBottle = () => import('views/study/other/TimeBottle.vue')
 const Exchange = () => import('views/study/other/Exchange.vue')
 const StudyTime = () => import('views/study/other/StudyTime.vue')
+const StudyTimeSeat = () => import('views/study/other/StudyTimeSeat.vue')
 
 const SchoolMate = () => import('views/schoolmate/SchoolMate.vue')
 const TongZhi = () => import('views/schoolmate/other/TongZhi.vue')
@@ -54,6 +56,10 @@ const routes = [{
     component: Rank
 },
 {
+    path: '/scan',
+    component: Scan
+},
+{
     path: '/shop',
     component: Shop
 },
@@ -68,6 +74,11 @@ const routes = [{
 {
     path: '/studytime',
     component: StudyTime
+},
+{
+    name: 'studytimeseat',
+    path: '/studytimeseat/roomNumber/:roomNumber/seatsNumber/:seatsNumber',
+    component: StudyTimeSeat
 },
 
 

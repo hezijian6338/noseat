@@ -13,9 +13,14 @@ const store = new Vuex.Store({
         neverchangTime: 0,
         duration: 0,
         tagName: '1',
+        onseat: false
     },
     mutations: {
+        setOnseat(state, onseat) {
+            state.onseat = onseat
+        },
         TimeStart(state, payload) {
+            console.log('payload ', payload);
             state.neverchangTime = payload.time
             state.duration = payload.time
             state.tagName = payload.tagName
@@ -28,12 +33,6 @@ const store = new Vuex.Store({
             state.neverchangTime = 0
             state.duration = 0
         },
-        setDuration(state, duration) {
-            state.duration = duration
-        },
-        setNeverchangTime(state, neverchangTime) {
-            state.neverchangTime = neverchangTime
-        }
     },
     getters: {
         countTime(state) {
@@ -63,14 +62,17 @@ const store = new Vuex.Store({
             time,
             tagName,
         }) {
+            console.log('time', time);
             commit('TimeStart', {
                 time,
                 tagName,
             })
-            dispatch('TimeCalculate', {
-                time,
-                tagName,
-            })
+            dispatch('TimeCalculate')
+        },
+        setOnseat(context, {
+            onseat,
+        }) {
+            context.commit('setOnseat', onseat)
         }
     },
     modules: {

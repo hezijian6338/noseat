@@ -21,6 +21,7 @@ module.exports = {
     }
   },
   devServer: {
-    proxy: 'http://49.235.144.211:8344/'
+    proxy: 'http://49.235.144.211:8344/',
+    // https: true,
   }
 }

@@ -20,10 +20,11 @@ import StudyCenter from './children/StudyCenter'
 import StudyBottom from './children/StudyBottom'
 import StudyBottom2 from './children/StudyBottom2'
 import MainTabBar from 'components/common/MainTabBar/MainTabBar'
-import { login } from '@/api/login'
 import { mapState } from 'vuex'
 import { mapActions } from 'vuex'
 import { checkTime } from '@/api/record'
+
+import { seatCheck, seatDown } from '@/api/seat'
 
 export default {
   name: 'Study',
@@ -41,6 +42,7 @@ export default {
   computed: {
     ...mapState({
       token: state => state.login.token,
+      userinfo: state => state.login.userinfo,
       duration: state => state.duration,
       neverchangTime: state => state.neverchangTime
     })
@@ -51,9 +53,16 @@ export default {
   created() {
     if (this.duration == 0) {
       checkTime(this.token).then(result => {
+        let wantedTime = result.data.wantedTime
+        let studiedTime = result.data.studiedTime
+        let tagName = result.data.momentTag
+        let time = parseInt((wantedTime - studiedTime) / 1000)
         this.$store.dispatch('timer', {
-          time: result.data,
-          tagName: ''
+          time,
+          tagName
+        })
+        this.$store.dispatch('setOnseat', {
+          onseat: true
         })
       })
     }

@@ -3,22 +3,24 @@
     <div>
       <router-view></router-view>
     </div>
-    
   </div>
 </template>
 
 <script>
-
-
 export default {
   name: 'app',
-  components: {
-    
-  }
+  components: {}
 }
 </script>
 
 <style>
 @import url(assets/css/base/base.css);
 @import url(assets/css/common/common.css);
+html,
+body {
+  height: 100%;
+}
+#app {
+  height: 100%;
+}
 </style>
