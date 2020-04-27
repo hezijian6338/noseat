@@ -1,4 +1,5 @@
 # noseat
+一个前端小项目，用到了vue.js、vuex、vue-router、axios的基本知识
 
 ## Project setup
 ```
