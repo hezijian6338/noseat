@@ -52,11 +52,14 @@ export default {
         })
         .catch(error => {
           this.error = error
+          this.$router.push({
+            name: 'study'
+          })
         })
     },
     cancel() {
       this.$router.push({
-        path: '/study'
+        name: 'study'
       })
     },
     async onInit(promise) {

@@ -76,7 +76,6 @@
 import NavBar from 'components/content/navbar/NavBar'
 import TimeStudy from 'components/content/timestudy/TimeStudy'
 import Brand from 'components/content/brand/Brand'
-import { seatDown } from '@/api/seat'
 
 export default {
   name: 'StudyTime',
@@ -107,22 +106,17 @@ export default {
       console.log((this.$refs.brand.value = this.brandList[index]))
     },
     startClick() {
-      seatDown({
-        montentTag: this.brandList[this.currentIndex2],
-        roomNumber: this.params.roomNumber,
-        seatsNumber: this.params.seatsNumber,
-        wantedTime: this.time * 1000 + ''
-      })
-        .then(result => {
-          this.$store.commit('TimeStart', {
-            time: this.time,
-            tagName: this.brandList[this.currentIndex2]
-          })
-          this.$router.push('/study')
-          this.$store.dispatch('TimeCalculate')
+      this.$store
+        .dispatch('seatDown', {
+          montentTag: this.brandList[this.currentIndex2],
+          roomNumber: this.params.roomNumber,
+          seatsNumber: this.params.seatsNumber,
+          wantedTime: this.time * 1000 + ''
         })
-        .catch(error => {
-          this.error = error
+        .then(result => {
+          this.$router.push({
+            name: 'study'
+          })
         })
     }
   },

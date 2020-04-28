@@ -30,48 +30,49 @@ const GetGood = () => import('views/personal/other/GetGood.vue')
 const Visted = () => import('views/personal/other/Visted.vue')
 const StudyDetail = () => import('views/personal/other/StudyDetail.vue')
 
-const login = () => import('views/login.vue')
-
-
 //配置路由
 const routes = [{
     path: '/',
     redirect: '/study'
 },
-{
-    path: '/login',
-    component: login
-},
 //学习 相关路由
 {
+    name: 'study',
     path: '/study',
     component: Study
 },
 {
+    name: 'searchseat',
     path: '/searchseat',
     component: SearchSeat
 },
 {
+    name: 'rank',
     path: '/rank',
     component: Rank
 },
 {
+    name: 'scan',
     path: '/scan',
     component: Scan
 },
 {
+    name: 'shop',
     path: '/shop',
     component: Shop
 },
 {
+    name: 'timebottle',
     path: '/timebottle',
     component: TimeBottle
 },
 {
+    name: 'exchange',
     path: '/exchange',
     component: Exchange
 },
 {
+    name: 'studytime',
     path: '/studytime',
     component: StudyTime
 },
@@ -84,20 +85,24 @@ const routes = [{
 
 //同学 相关路由
 {
+    name: 'schoolmate',
     path: '/schoolmate',
     component: SchoolMate
 },
 {
+    name: 'tongzhi',
     path: '/tongzhi',
     component: TongZhi
 },
 {
+    name: 'learnteam',
     path: '/learnteam',
     component: LearnTeam
 },
 
 //朋友圈相关路由
 {
+    name: 'sns',
     path: '/sns',
     component: Sns
 },
@@ -105,26 +110,32 @@ const routes = [{
 
 //我的 相关路由
 {
+    name: 'personal',
     path: '/personal',
     component: Personal
 },
 {
+    name: 'authentication',
     path: '/authentication',
     component: Authentication
 },
 {
+    name: 'more',
     path: '/more',
     component: More
 },
 {
+    name: 'getgood',
     path: '/getgood',
     component: GetGood
 },
 {
+    name: 'visited',
     path: '/visited',
     component: Visted
 },
 {
+    name: 'studydetail',
     path: '/studydetail',
     component: StudyDetail
 }

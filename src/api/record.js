@@ -1,4 +1,3 @@
-import qs from 'qs'
 import {
     request
 } from '@/api/request'

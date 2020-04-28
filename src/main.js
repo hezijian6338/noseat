@@ -42,17 +42,19 @@ Vue.use(ElementUI);
 // })
 
 router.beforeEach((to, from, next) => {
-  let token = Cookies.get('token') == undefined ? '' : Cookies.get('token')
-  if (token == '') {
-    store.dispatch('setDialog', {
-      bool: true
+  store
+    .dispatch('isLogin')
+    .then((result) => {
+      store.dispatch('setShowLoginForm', {
+        bool: false
+      })
+      next()
     })
-  } else {
-    store.dispatch('setDialog', {
-      bool: false
+    .catch(error => {
+      store.dispatch('setShowLoginForm', {
+        bool: true
+      })
     })
-    next()
-  }
 })
 
 new Vue({

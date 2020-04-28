@@ -1,46 +1,77 @@
 <template>
   <div class="flex-center">
     <el-progress :width="200" type="circle" :percentage="this.$store.getters.percent" :show-text="false"></el-progress>
+
     <div class="count-time">{{ this.$store.getters.countTime }}</div>
+
     <div id="time-icon" class="tag-name">{{ this.$store.state.tagName }}</div>
-    <button class="btn1" @click="centerDialogVisible = true">结束</button>
-    <el-dialog :visible.sync="centerDialogVisible" width="50%" center>
+
+    <button class="btn1" v-show="status != 'temp'" @click="endDialog = true">结束</button>
+    <el-dialog :visible.sync="endDialog" width="50%" center>
       <div class="flex-center">
         <div class="jieshu">结束提醒</div>
         <div class="text">您确定要放弃学习吗?</div>
-        <button class="btn outline-none" @click="btnClick">放弃</button>
-        <button class="btn btn2 outline-none" @click="centerDialogVisible = false">取消</button>
+        <button class="btn outline-none" @click="end">放弃</button>
+        <button class="btn btn2 outline-none" @click="endDialog = false">取消</button>
+      </div>
+    </el-dialog>
+
+    <button class="btn1 btn-leave" v-show="status == 'study'" @click="tempLeaveDialog = true">暂离</button>
+    <el-dialog :visible.sync="tempLeaveDialog" width="50%" center>
+      <div class="flex-center">
+        <div class="jieshu">暂离提醒</div>
+        <div class="text">您确定要暂离座位吗?</div>
+        <button class="btn btn-leave outline-none" @click="tempLeave">确定</button>
+        <button class="btn btn2 outline-none" @click="tempLeaveDialog = false">取消</button>
+      </div>
+    </el-dialog>
+
+    <button class="btn1" v-show="status == 'temp'" @click="studyDialog = true">重新入座</button>
+    <el-dialog :visible.sync="studyDialog" width="50%" center>
+      <div class="flex-center">
+        <div class="jieshu">重新入座</div>
+        <div class="text">您确定要重新入座吗?</div>
+        <button class="btn btn-leave outline-none" @click="study">确定</button>
+        <button class="btn btn2 outline-none" @click="studyDialog = false">取消</button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { seatLeave } from '@/api/seat'
+import { seatLeave, seatTempLeave } from '@/api/seat'
+import { checkTime } from '@/api/record'
 import { mapState } from 'vuex'
 
 export default {
   name: 'StudyBottom2',
-  methods: {
-    btnClick() {
-      if (this.onseat) {
-        seatLeave().then(result => {
-          this.$store.commit('TimeZero')
-          this.$store.dispatch('setOnseat', {
-            onseat: false
-          })
-        })
-      } else {
-        this.$store.commit('TimeZero')
-      }
+  data() {
+    return {
+      endDialog: false,
+      tempLeaveDialog: false,
+      studyDialog: false
     }
   },
   computed: {
-    ...mapState(['onseat'])
+    ...mapState(['status'])
   },
-  data() {
-    return {
-      centerDialogVisible: false
+  methods: {
+    end() {
+      if (this.status == 'chill') {
+        this.$store.commit('TimeZero')
+      } else {
+        this.$store.dispatch('endStudy')
+      }
+    },
+    tempLeave() {
+      this.$store.dispatch('tempLeave').then(result => {
+        this.tempLeaveDialog = false
+      })
+    },
+    study() {
+      this.$store.dispatch('tempLeave').then(result => {
+        this.studyDialog = false
+      })
     }
   }
 }
@@ -87,6 +118,11 @@ export default {
 }
 .btn2 {
   background-color: #eee;
+  margin-top: 10px;
+}
+.btn-leave {
+  background-color: #77caff;
+  color: white;
   margin-top: 10px;
 }
 </style>

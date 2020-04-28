@@ -1,4 +1,3 @@
-import qs from 'qs'
 import {
     request
 } from '@/api/request'
@@ -52,6 +51,21 @@ export const seatDown = ({
 export const seatLeave = () => {
     return new Promise((resolve, reject) => {
         let url = 'seat/leave'
+        request(url, {
+            method: 'post',
+        })
+            .then((result) => {
+                resolve(result)
+            })
+            .catch((error) => {
+                reject(error)
+            })
+    })
+}
+
+export const seatTempLeave = () => {
+    return new Promise((resolve, reject) => {
+        let url = 'seat/temp/leave'
         request(url, {
             method: 'post',
         })
