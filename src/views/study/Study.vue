@@ -20,10 +20,18 @@ import StudyCenter from './children/StudyCenter'
 import StudyBottom from './children/StudyBottom'
 import StudyBottom2 from './children/StudyBottom2'
 import MainTabBar from 'components/common/MainTabBar/MainTabBar'
+import { mapState } from 'vuex'
+import { mapMutations } from 'vuex'
 import { mapActions } from 'vuex'
 
 export default {
   name: 'Study',
+  computed: {
+    ...mapState(['duration'])
+  },
+  methods: {
+    ...mapMutations(['Timedown'])
+  },
   components: {
     NavBar,
     StudyTop,
@@ -32,8 +40,23 @@ export default {
     StudyBottom2,
     MainTabBar
   },
+  data() {
+    return {
+      timer: ''
+    }
+  },
   created() {
+    // 1、尝试把计时器keep alive
+    // 2、更新neverchangeTime的值
+    this.timer = setInterval(() => {
+      if (this.duration > 0) {
+        this.Timedown()
+      }
+    }, 1000)
     this.$store.dispatch('checkTime')
+  },
+  beforeDestroy() {
+    clearTimeout(this.timer)
   }
 }
 </script>

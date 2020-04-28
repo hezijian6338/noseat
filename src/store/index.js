@@ -25,7 +25,7 @@ const store = new Vuex.Store({
             state.showLoginForm = bool
         },
         TimeStart(state, payload) {
-            state.neverchangTime = payload.time
+            state.neverchangTime = payload.never
             state.duration = payload.time
             state.tagName = payload.tagName
         },
@@ -41,25 +41,6 @@ const store = new Vuex.Store({
         setShowLoginForm(context, { bool }) {
             context.commit('setShowLoginForm', bool)
         },
-        TimeCalculate(context) {
-            let time1 = setInterval(() => {
-                if (context.state.duration > 0) {
-                    context.commit('Timedown')
-                } else {
-                    clearInterval(time1)
-                }
-            }, 1000)
-        },
-        timer({ dispatch, commit }, { time, tagName }) {
-            commit('TimeStart', { time, tagName })
-            dispatch('TimeCalculate')
-        },
-        // 不是每次都用checktime，刷新页面的时候才用checktime
-        // 另外，用cookie把固定的时间存起来，刷新页面之后也可以用到固定的时间
-        // 总结
-        // 用到checktime的地方：登录、刷新、状态更变
-        // 每次用到checktime的时候，如果有计时，改变neverchangeTime的值
-        // 不要重复调用计时器
         checkTime(context) {
             return new Promise((resolve, reject) => {
                 let token = context.state.token
@@ -80,7 +61,8 @@ const store = new Vuex.Store({
                     }
                     let tagName = result.data.momentTag
                     let time = parseInt((t1 - t2) / 1000)
-                    context.dispatch('timer', { time, tagName })
+                    commit('TimeStart', { never: t1, time, tagName })
+
                 }).catch(error => {
                     reject(error)
                 })
@@ -91,10 +73,8 @@ const store = new Vuex.Store({
                 seatDown({ montentTag, roomNumber, seatsNumber, wantedTime }).then(result => {
                     context.commit('setStatus', 'study')
                     resolve('study')
-                    context.dispatch('timer', {
-                        time: wantedTime,
-                        tagName: montentTag
-                    })
+                    commit('TimeStart', { never: wantedTime, time, tagName })
+
                 }).catch(error => {
                     this.error = error
                     reject(error)
