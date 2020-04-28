@@ -28,9 +28,7 @@ import { seatCheck, seatDown } from '@/api/seat'
 
 export default {
   name: 'Study',
-  data() {
-    return {}
-  },
+
   components: {
     NavBar,
     StudyTop,

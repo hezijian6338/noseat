@@ -13,9 +13,13 @@ const store = new Vuex.Store({
         neverchangTime: 0,
         duration: 0,
         tagName: '1',
-        onseat: false
+        onseat: false,
+        dialogFormVisible: false
     },
     mutations: {
+        setDialog(state, d) {
+            state.dialogFormVisible = d
+        },
         setOnseat(state, onseat) {
             state.onseat = onseat
         },
@@ -48,6 +52,9 @@ const store = new Vuex.Store({
         }
     },
     actions: {
+        setDialog(context, { bool }) {
+            context.commit('setDialog', bool)
+        },
         TimeCalculate(context) {
             let time1 = setInterval(
                 () => {
