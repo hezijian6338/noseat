@@ -61,9 +61,9 @@ const store = new Vuex.Store({
                         context.commit('setStatus', 'chill')
                         resolve('chill')
                     }
-                    let tagName = result.data.momentTag
-                    let time = parseInt((t1 - t2) / 1000)
                     let never = parseInt(t1 / 1000)
+                    let time = parseInt((t1 - t2) / 1000)
+                    let tagName = result.data.momentTag
                     context.commit('TimeStart', { never, time, tagName })
                 }).catch(error => {
                     reject(error)

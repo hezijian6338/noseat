@@ -1,8 +1,10 @@
 # noseat
-一个前端小项目，用到了vue.js、vuex、vue-router、axios的基本知识
+复习vue所做的小项目。
 
-项目的一些难点：
+技术要点：
 
-- 计数器需要在beforeDistory中清除，不然在页面切换回来的时候，会重新生成计时器
-- 计数器可以使用keep-alive进行组件缓存
+- 计时器的生命周期。页面切换时需要distroy内清除计时器，不然会重复生成。
+- keep-alive与vue-router的结合应用。
+- vuex的基础使用。
+- axios的基础使用与封装。
 
