@@ -25,7 +25,7 @@ const store = new Vuex.Store({
             state.showLoginForm = bool
         },
         TimeStart(state, payload) {
-            // console.log('payload ', payload);
+            console.log('payload ', payload);
             state.neverchangTime = payload.never
             state.duration = payload.time
             state.tagName = payload.tagName
@@ -48,6 +48,7 @@ const store = new Vuex.Store({
                 checkTime(token).then(result => {
                     let t1 = result.data.wantedTime
                     let t2 = 0
+                    // 设置状态
                     if (result.data.studiedTime) {
                         t2 = result.data.studiedTime
                         context.commit('setStatus', 'study')
@@ -62,7 +63,8 @@ const store = new Vuex.Store({
                     }
                     let tagName = result.data.momentTag
                     let time = parseInt((t1 - t2) / 1000)
-                    commit('TimeStart', { never: t1, time, tagName })
+                    let never = parseInt(t1 / 1000)
+                    context.commit('TimeStart', { never, time, tagName })
                 }).catch(error => {
                     reject(error)
                 })
@@ -71,9 +73,8 @@ const store = new Vuex.Store({
         seatDown(context, { montentTag, roomNumber, seatsNumber, wantedTime }) {
             return new Promise((resolve, reject) => {
                 seatDown({ montentTag, roomNumber, seatsNumber, wantedTime }).then(result => {
-                    context.commit('setStatus', 'study')
                     resolve('study')
-                    commit('TimeStart', { never: wantedTime, time, tagName })
+                    context.dispatch('checkTime')
                 }).catch(error => {
                     this.error = error
                     reject(error)
@@ -83,7 +84,7 @@ const store = new Vuex.Store({
         endStudy(context) {
             seatLeave().then(result => {
                 context.commit('TimeZero')
-                context.dispatch('setStatus', 'chill')
+                context.commit('setStatus', 'chill')
             })
         },
         tempLeave(context) {

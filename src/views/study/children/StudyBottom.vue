@@ -10,7 +10,7 @@
       <span class="learn1">扫码上座</span>
       <span class="learn2">规范座位,专注学习</span>
     </div>
-    <span class="search" @click="gotoSearchSeatClick">查找座位<img src="~assets/imgs/study/right_arrow.png" alt="时间瓶"/></span>
+    <!-- <span class="search" @click="gotoSearchSeatClick">查找座位<img src="~assets/imgs/study/right_arrow.png" alt="时间瓶"/></span> -->
   </div>
 </template>
 
