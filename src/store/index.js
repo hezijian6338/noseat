@@ -25,6 +25,7 @@ const store = new Vuex.Store({
             state.showLoginForm = bool
         },
         TimeStart(state, payload) {
+            // console.log('payload ', payload);
             state.neverchangTime = payload.never
             state.duration = payload.time
             state.tagName = payload.tagName
@@ -62,7 +63,6 @@ const store = new Vuex.Store({
                     let tagName = result.data.momentTag
                     let time = parseInt((t1 - t2) / 1000)
                     commit('TimeStart', { never: t1, time, tagName })
-
                 }).catch(error => {
                     reject(error)
                 })
@@ -74,7 +74,6 @@ const store = new Vuex.Store({
                     context.commit('setStatus', 'study')
                     resolve('study')
                     commit('TimeStart', { never: wantedTime, time, tagName })
-
                 }).catch(error => {
                     this.error = error
                     reject(error)

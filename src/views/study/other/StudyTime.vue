@@ -97,11 +97,11 @@ export default {
     },
     startClick() {
       this.$store.commit('TimeStart', {
+        never: this.time,
         time: this.time,
         tagName: this.brandList[this.currentIndex2]
       })
       this.$router.push('/study')
-      this.$store.dispatch('TimeCalculate')
     }
   },
   data() {

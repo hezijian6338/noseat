@@ -39,7 +39,10 @@ const routes = [{
 {
     name: 'study',
     path: '/study',
-    component: Study
+    component: Study,
+    meta: {
+        keepAlive: true // 需要被缓存
+    }
 },
 {
     name: 'searchseat',

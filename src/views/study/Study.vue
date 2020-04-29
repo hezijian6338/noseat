@@ -47,9 +47,12 @@ export default {
   },
   created() {
     // 1、尝试把计时器keep alive
-    // 2、更新neverchangeTime的值
+    // 2、时刻更新neverchangeTime的值
+    // let i = 0
     this.timer = setInterval(() => {
       if (this.duration > 0) {
+        // i += 1
+        // console.log(i)
         this.Timedown()
       }
     }, 1000)
