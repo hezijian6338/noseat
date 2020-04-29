@@ -26,7 +26,7 @@ const store = new Vuex.Store({
         },
         TimeStart(state, payload) {
             console.log('payload ', payload);
-            state.neverchangTime = payload.never
+            state.neverchangTime = payload.neverchangTime
             state.duration = payload.time
             state.tagName = payload.tagName
         },
@@ -46,25 +46,28 @@ const store = new Vuex.Store({
             return new Promise((resolve, reject) => {
                 let token = context.state.token
                 checkTime(token).then(result => {
-                    let t1 = result.data.wantedTime
-                    let t2 = 0
+                    let neverchangTime = 0
+                    let usedTime = 0
+                    let tagName = ''
                     // 设置状态
                     if (result.data.studiedTime) {
-                        t2 = result.data.studiedTime
+                        neverchangTime = result.data.wantedTime
+                        usedTime = result.data.studiedTime
+                        tagName = result.data.momentTag
                         context.commit('setStatus', 'study')
                         resolve('study')
                     } else if (result.data.tempLeaveTime) {
-                        t2 = result.data.tempLeaveTime
+                        neverchangTime = 1200000 //20分钟 1200000毫秒
+                        usedTime = result.data.tempLeaveTime
+                        tagName = '暂离'
                         context.commit('setStatus', 'temp')
                         resolve('temp')
                     } else {
                         context.commit('setStatus', 'chill')
                         resolve('chill')
                     }
-                    let never = parseInt(t1 / 1000)
-                    let time = parseInt((t1 - t2) / 1000)
-                    let tagName = result.data.momentTag
-                    context.commit('TimeStart', { never, time, tagName })
+                    let time = parseInt((neverchangTime - usedTime) / 1000)
+                    context.commit('TimeStart', { neverchangTime: neverchangTime / 1000, time, tagName })
                 }).catch(error => {
                     reject(error)
                 })
