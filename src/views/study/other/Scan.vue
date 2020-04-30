@@ -20,7 +20,6 @@
 
 <script>
 import { QrcodeStream } from 'vue-qrcode-reader'
-import { seatCheck, seatDown } from '@/api/seat'
 import { mapState } from 'vuex'
 import { getUrlParams } from '@/utils'
 

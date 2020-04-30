@@ -21,6 +21,7 @@ export const loginStore = {
             state.userinfo = userinfo
         },
         cleanLogininfo(state) {
+            Cookies.set('token', '')
             state.token = ''
             state.userinfo = {}
         },
@@ -31,14 +32,17 @@ export const loginStore = {
                 let token = Cookies.get('token')
                 getInfo(token)
                     .then((result) => {
-                        context.commit('setToken', token)
-                        context.commit('setUserinfo', result.data)
-                        resolve(result)
+                        if (result.code == 200) {
+                            context.commit('setToken', token)
+                            context.commit('setUserinfo', result.data)
+                            resolve(result)
+                        } else {
+                            context.commit('cleanLogininfo')
+                            reject(result)
+                        }
+
                     })
                     .catch(error => {
-                        if (error.code == 401) {
-                            context.commit('cleanLogininfo')
-                        }
                         reject(error)
                     })
             })
