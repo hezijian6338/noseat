@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import { loginStore } from '@/store/login'
 
 import { checkTime } from '@/api/record'
-import { seatDown, seatLeave, seatTempLeave } from '@/api/seat'
+import { seatDown, seatLeave, seatTempLeave, seatCheck, seatAnyway } from '@/api/seat'
 
 
 Vue.use(Vuex)
@@ -15,7 +15,7 @@ const store = new Vuex.Store({
         duration: 0,
         tagName: '',
         showLoginForm: false,
-        status: 'chill', //chill没在学习 study学习 temp暂离
+        status: 'chill', //chill没在学习 study学习 temp暂离 anyway抢座
     },
     mutations: {
         setStatus(state, s) {
@@ -102,7 +102,42 @@ const store = new Vuex.Store({
                         reject(error)
                     })
             })
-        }
+        },
+        seatCheck(context, { room_num, row, col }) {
+            return new Promise((resolve, reject) => {
+                seatCheck({
+                    room_num,
+                    row,
+                    col
+                })
+                    .then(result => {
+                        resolve(result.code)
+                    })
+                    .catch(error => {
+                        reject(error)
+                    })
+            })
+        },
+        seatAnyway(context, { room_num, row, col }) {
+            return new Promise((resolve, reject) => {
+                seatAnyway({
+                    room_num,
+                    row,
+                    col
+                })
+                    .then(result => {
+                        // 设置抢座时间，开始计时
+                        // 提交抢座状态
+                        let anywayTime = 60000 * 20 / 1000
+                        context.commit('setStatus', 'anyway')
+                        resolve('anyway')
+                        context.commit('TimeStart', { neverchangTime: anywayTime, time: anywayTime, tagName: '抢座中...' })
+                    })
+                    .catch(error => {
+                        reject(error)
+                    })
+            })
+        },
     },
     getters: {
         countTime(state) {

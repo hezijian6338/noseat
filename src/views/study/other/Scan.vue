@@ -7,6 +7,14 @@
         <el-button type="primary" @click="cancel">确 定</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog center title="提示" :visible.sync="dialog" width="80%" :before-close="cancel">
+      <span style="text-align : center">你可以进行抢座了~</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="ensure">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -24,8 +32,9 @@ export default {
     return {
       result: [],
       error: '',
+      dialog: false,
       dialogError: false,
-      seat: {}
+      params: {}
     }
   },
   computed: {
@@ -35,23 +44,43 @@ export default {
   },
   methods: {
     onDecode(result) {
-      this.seat = getUrlParams(result)
-      seatCheck({
-        room_num: this.seat.roomNumber,
-        row: this.seat.row,
-        col: this.seat.col
-      })
+      this.params = getUrlParams(result)
+      this.$store
+        .dispatch('seatCheck', {
+          room_num: this.params.roomNumber,
+          row: this.params.row,
+          col: this.params.col
+        })
         .then(result => {
-          this.$router.push({
-            name: 'studytimeseat',
-            params: {
-              roomNumber: this.seat.roomNumber,
-              seatsNumber: this.seat.row + ',' + this.seat.col
-            }
-          })
+          if (result == 200) {
+            this.$router.push({
+              name: 'studytimeseat',
+              params: {
+                roomNumber: this.params.roomNumber,
+                seatsNumber: this.params.row + ',' + this.params.col
+              }
+            })
+          } else {
+            // 抢座时间时间20分钟
+            // 提示刷新或者退出的话，自动抢座失败，让其决定是否刷新或者关闭页面
+            this.dialog = true
+          }
         })
         .catch(error => {
           this.error = error
+          this.$router.push({
+            name: 'study'
+          })
+        })
+    },
+    ensure() {
+      this.$store
+        .dispatch('seatAnyway', {
+          room_num: this.params.roomNumber,
+          row: this.params.row,
+          col: this.params.col
+        })
+        .then(result => {
           this.$router.push({
             name: 'study'
           })

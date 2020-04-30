@@ -6,7 +6,7 @@
 
     <div id="time-icon" class="tag-name">{{ this.$store.state.tagName }}</div>
 
-    <button class="btn1" v-show="status != 'temp'" @click="endDialog = true">结束</button>
+    <button class="btn1" v-show="status != 'temp' && status != 'anyway'" @click="endDialog = true">结束</button>
     <el-dialog :visible.sync="endDialog" width="50%" center>
       <div class="flex-center">
         <div class="jieshu">结束提醒</div>
@@ -35,6 +35,16 @@
         <button class="btn btn2 outline-none" @click="studyDialog = false">取消</button>
       </div>
     </el-dialog>
+
+    <button class="btn1" v-show="status == 'anyway'" @click="endAnywayDialog = true">取消</button>
+    <el-dialog :visible.sync="endAnywayDialog" width="50%" center>
+      <div class="flex-center">
+        <div class="jieshu">结束抢座</div>
+        <div class="text">您确定要结束抢座吗?</div>
+        <button class="btn outline-none" @click="endAnyway">确定</button>
+        <button class="btn btn2 outline-none" @click="endAnywayDialog = false">取消</button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -49,7 +59,8 @@ export default {
     return {
       endDialog: false,
       tempLeaveDialog: false,
-      studyDialog: false
+      studyDialog: false,
+      endAnywayDialog: false
     }
   },
   computed: {
@@ -72,8 +83,16 @@ export default {
       this.$store.dispatch('tempLeave').then(result => {
         this.studyDialog = false
       })
+    },
+    endAnyway() {
+      this.$store.commit('TimeZero')
     }
   }
+  // beforeDestory(){
+  //   if (this.$store.state.status == 'anyway') {
+
+  //   }
+  // }
 }
 </script>
 

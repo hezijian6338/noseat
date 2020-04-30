@@ -53,7 +53,7 @@ instance.interceptors.response.use(
   (response) => {
     // console.log('响应拦截response ', response);
     // loadingInstance.close()
-    if (response.data.code === 200) {
+    if (response.status === 200) {
       return Promise.resolve(response.data)
     } else {
       Message({

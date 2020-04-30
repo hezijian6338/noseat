@@ -2,6 +2,25 @@ import {
     request
 } from '@/api/request'
 
+export const seatAnyway = ({
+    room_num,
+    row,
+    col,
+}) => {
+    return new Promise((resolve, reject) => {
+        let url = 'seat/anyway/' + room_num + '/row/' + row + '/col/' + col
+        request(url, {
+            method: 'post',
+        })
+            .then((result) => {
+                resolve(result)
+            })
+            .catch((error) => {
+                reject(error)
+            })
+    })
+}
+
 export const seatCheck = ({
     room_num,
     row,
