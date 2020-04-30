@@ -16,8 +16,12 @@ const store = new Vuex.Store({
         tagName: '',
         showLoginForm: false,
         status: 'chill', //chill没在学习 study学习 temp暂离 anyway抢座
+        seatInfo: {}
     },
     mutations: {
+        setSeatinfo(state, s) {
+            state.seatInfo = s
+        },
         setStatus(state, s) {
             state.status = s
         },
@@ -111,6 +115,7 @@ const store = new Vuex.Store({
                     col
                 })
                     .then(result => {
+                        context.commit('setSeatinfo', { room_num, row, col })
                         resolve(result.code)
                     })
                     .catch(error => {
@@ -129,6 +134,7 @@ const store = new Vuex.Store({
                         // 设置抢座时间，开始计时
                         // 提交抢座状态
                         let anywayTime = 60000 * 20 / 1000
+                        // let anywayTime = 10
                         context.commit('setStatus', 'anyway')
                         resolve('anyway')
                         context.commit('TimeStart', { neverchangTime: anywayTime, time: anywayTime, tagName: '抢座中...' })

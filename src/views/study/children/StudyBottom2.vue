@@ -52,6 +52,7 @@
 import { seatLeave, seatTempLeave } from '@/api/seat'
 import { checkTime } from '@/api/record'
 import { mapState } from 'vuex'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'StudyBottom2',
@@ -67,6 +68,7 @@ export default {
     ...mapState(['status'])
   },
   methods: {
+    ...mapMutations(['setStatus']),
     end() {
       if (this.status == 'chill') {
         this.$store.commit('TimeZero')
@@ -85,6 +87,7 @@ export default {
       })
     },
     endAnyway() {
+      this.setStatus('chill')
       this.$store.commit('TimeZero')
     }
   }

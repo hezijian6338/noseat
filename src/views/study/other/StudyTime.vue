@@ -97,7 +97,7 @@ export default {
     },
     startClick() {
       this.$store.commit('TimeStart', {
-        never: this.time,
+        neverchangTime: this.time,
         time: this.time,
         tagName: this.brandList[this.currentIndex2]
       })

@@ -45,6 +45,8 @@ export default {
   methods: {
     onDecode(result) {
       this.params = getUrlParams(result)
+      console.log(this.params)
+
       this.$store
         .dispatch('seatCheck', {
           room_num: this.params.roomNumber,
@@ -52,7 +54,7 @@ export default {
           col: this.params.col
         })
         .then(result => {
-          if (result == 200) {
+          if (result === 200) {
             this.$router.push({
               name: 'studytimeseat',
               params: {
@@ -61,8 +63,6 @@ export default {
               }
             })
           } else {
-            // 抢座时间时间20分钟
-            // 提示刷新或者退出的话，自动抢座失败，让其决定是否刷新或者关闭页面
             this.dialog = true
           }
         })
