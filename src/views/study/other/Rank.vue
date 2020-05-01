@@ -9,7 +9,7 @@
     <div class="flex-center">
       <div class="myinfo flex-row">
         <div class="left flex-col">
-          <span class="content">未上榜</span>
+          <span class="content">{{ mc }}</span>
           <span class="title">小队排名</span>
         </div>
         <div class="middle flex-col">
@@ -17,19 +17,20 @@
           {{ name }}
         </div>
         <div class="right flex-col">
-          <span class="content">0</span>
+          <span class="content">{{ hy }}</span>
           <span class="title">小组活跃</span>
         </div>
       </div>
       <div class="ranklist">
-        <div class="item flex-row-between" v-for="item in rank" key="item.id">
+        <div class="item flex-row-between" v-for="(item, index) in rank" :key="item.id">
           <div class="info flex-row-center">
-            1
+            {{ index + 1 }}
             <img class="avatar jiange" src="~assets/imgs/common/default_avatar.png" alt="" />
-            lyh
+            {{ item.user.name }}
           </div>
           <div class="score">
-            活跃7000
+            <div class="st">活跃</div>
+            <div class="sc">{{ parseInt(item.stayTime / 1000) }}</div>
           </div>
         </div>
       </div>
@@ -46,7 +47,9 @@ export default {
   name: 'Rank',
   data() {
     return {
-      rank: []
+      rank: [],
+      mc: '未上榜',
+      hy: '0'
     }
   },
   components: {
@@ -75,7 +78,34 @@ export default {
       month,
       day
     }).then(result => {
-      this.rank = result.data
+      let data = [...new Set(result.data)].sort(function(a, b) {
+        return b.stayTime - a.stayTime
+      })
+      let data2 = []
+      for (let index = 1; index < data.length; index++) {
+        const now = data[index]
+        const before = data[index - 1]
+
+        if (index == 1) {
+          data2.push(before)
+        }
+
+        if (now.userId == before.userId) {
+          if (now.stayTime > before.stayTime) {
+            data2.push(now)
+          }
+        } else {
+          data2.push(now)
+        }
+      }
+      for (let index = 0; index < data2.length; index++) {
+        const e = data2[index]
+        if (this.$store.state.login.userinfo.id == e.userId) {
+          this.mc = index + 1
+          this.hy = parseInt(e.stayTime / 1000)
+        }
+      }
+      this.rank = data2
     })
   }
 }
@@ -153,5 +183,20 @@ export default {
 }
 .jiange {
   margin: 0 15px;
+}
+.score {
+  width: 30%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.st {
+  width: 50%;
+  text-align: right;
+}
+.sc {
+  width: 50%;
+  text-align: left;
+  padding-left: 4px;
 }
 </style>

@@ -44,8 +44,6 @@ export default {
   methods: {
     onDecode(result) {
       this.params = getUrlParams(result)
-      console.log(this.params)
-
       this.$store
         .dispatch('seatCheck', {
           room_num: this.params.roomNumber,

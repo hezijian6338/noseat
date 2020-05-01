@@ -5,13 +5,22 @@
       <span slot="center">不占座</span>
     </nav-bar>
 
-    <ul v-if="this.list.length">
-      <el-table :data="this.list" style="width: 100%" @row-click="rowClick">
-        <el-table-column prop="momtentTag" label="标签"> </el-table-column>
-        <el-table-column prop="roomNumber" label="教室编号"> </el-table-column>
-        <el-table-column prop="seatsNumber" label="行/列"> </el-table-column>
-      </el-table>
-    </ul>
+    <div v-if="this.list.length">
+      <div class="flex-center">
+        <div class="ranklist">
+          <div class="item flex-row-between" v-for="item in list" :key="item.id" @click="rowClick(item)">
+            <div class="info flex-row-center">
+              {{ item.momtentTag }}
+              <img class="avatar jiange" src="~assets/imgs/index/release.png" alt="" />
+              {{ item.roomNumber }} {{ item.seatsNumber }}
+            </div>
+            <div class="score">
+              {{ item.createdTime | dateString }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div v-else>
       <div class="flex-center tongzhi-container">
         <img src="~assets/imgs/study/no_seat.png" alt="没有" />
@@ -45,6 +54,31 @@ export default {
   components: {
     NavBar
   },
+  filters: {
+    dateString: function(value) {
+      if (!value) {
+        return ''
+      } else {
+        let date = new Date(value)
+        let y = date.getFullYear()
+        let m = date.getMonth()
+        let d = date.getDate()
+        let h = date.getHours() + 1
+        let min = date.getMinutes() + 1
+        let s = date.getSeconds() + 1
+        if (h < 10) {
+          h = '0' + h
+        }
+        if (min < 10) {
+          min = '0' + min
+        }
+        if (s < 10) {
+          s = '0' + s
+        }
+        return y + '/' + m + '/' + d + ' ' + h + ':' + min + ':' + s
+      }
+    }
+  },
   methods: {
     backClick() {
       this.$router.back()
@@ -55,6 +89,7 @@ export default {
       })
     },
     rowClick(data) {
+      console.log(data)
       this.d = {
         room_num: data.roomNumber,
         row: data.seatsNumber.split(',')[0],
@@ -116,5 +151,81 @@ export default {
 .tongzhi-container span {
   font-size: 20px;
   font-weight: 900;
+}
+.flex-center {
+  margin-bottom: 20px;
+}
+#container {
+  height: 100%;
+}
+#back {
+  width: 150px;
+}
+.bg {
+  background-color: #f3f3f3;
+  height: 100%;
+}
+.flex-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+}
+.flex-row-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.flex-row-center {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.flex-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.myinfo {
+  background: white;
+  width: 94%;
+  box-shadow: 0px 0px 15px #999;
+  height: 90px;
+  border-radius: 10px;
+  margin: 15px 0;
+  padding-bottom: 40px;
+}
+.avatar {
+  width: 50px;
+  height: 50px;
+}
+.content {
+  font-size: 24px;
+}
+.title {
+  font-size: 12px;
+  color: #999;
+}
+.ranklist {
+  width: 94%;
+}
+.item {
+  background: white;
+  box-shadow: 0px 0px 10px #dadada;
+  height: 70px;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.info {
+  width: 70%;
+  padding-left: 0px;
+}
+.jiange {
+  margin: 0 15px;
+}
+.score {
+  text-align: right;
+  padding-right: 10px;
 }
 </style>
